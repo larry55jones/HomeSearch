@@ -1,7 +1,6 @@
 ﻿using AngleSharp;
 using AngleSharp.Dom;
 using HomeSearchAPI.Entities;
-using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -20,12 +19,7 @@ namespace HomeSearchAPI.Processing
             HomeSearchResults results = new HomeSearchResults();
             IDocument document = await GetDocumentAsync(pageText);
 
-            // Get the element containing all our properties
-            var houseLists = document.QuerySelectorAll("ul[data-testid=\"property-list-container\"]");
-            var houseList = houseLists[0];
-
-            // Get a list of li elements that contain property results
-            var listOfHouseElements = houseList.QuerySelectorAll("li[data-testid=\"result-card\"]");
+            var listOfHouseElements = GetHouseElementsList(document);
             foreach (IElement houseElement in listOfHouseElements)
             {
                 results.HomesForSale.Add(ProcessHomeNode(houseElement.FirstChild));
@@ -35,21 +29,37 @@ namespace HomeSearchAPI.Processing
             results.HomesForSale = results.HomesForSale.Where(h => !h.NewConstruction).ToList();
             return results;
         }
-        public static async Task<HomeSearchResults> MineDataFromFile(string filePath)
-        {
-            string pageText = await File.ReadAllTextAsync(filePath);
-            return await MineDataFromText(pageText);
-        }
 
-        public static async Task<string> GetHomeListFromHTML(string pageText)
+        public static async Task<IElement> GetPaginationControl(string pageText)
         {
             IDocument document = await GetDocumentAsync(pageText);
+            return GetPaginationControl(document);
+        }
 
+        public static IElement GetPaginationControl(IDocument document)
+        {
+            var paginationCandidates = document.QuerySelectorAll("div[data-testid=\"pagination\"]");
+            return paginationCandidates.Length > 0 ? paginationCandidates[0] : null;
+        }
+
+        public static async Task<int> GetDocumentPageCount(string pageText)
+        {
+            IElement paginationControl = await GetPaginationControl(pageText);
+            if (paginationControl == null)
+                return 1;
+
+            return paginationControl.ChildElementCount - 2;
+        }
+
+        private static IHtmlCollection<IElement> GetHouseElementsList(IDocument document)
+        {
             // Get the element containing all our properties
             var houseLists = document.QuerySelectorAll("ul[data-testid=\"property-list-container\"]");
             var houseList = houseLists[0];
 
-            return houseList.InnerHtml;
+            // Get a list of li elements that contain property results
+            var listOfHouseElements = houseList.QuerySelectorAll("li[data-testid=\"result-card\"]");
+            return listOfHouseElements;
         }
 
         private static async Task<IDocument> GetDocumentAsync(string pageText)

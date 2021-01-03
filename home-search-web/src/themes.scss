@@ -1,16 +1,23 @@
 // import Nebular Theme System and the dark theme
-@import '~@nebular/theme/styles/theming';
-@import '~@nebular/theme/styles/themes/default';
-@import '~@nebular/theme/styles/themes/dark';
+@import "~@nebular/theme/styles/theming";
+@import "~@nebular/theme/styles/themes/default";
+@import "~@nebular/theme/styles/themes/dark";
 
-$nb-themes: nb-register-theme((
-    font-family-primary:  'Open Sans',
-    font-family-secondary:  'Open Sans',
-    divider-color: #333
-), default, default);
+$nb-themes: nb-register-theme(
+    (
+        font-family-primary: "Open Sans",
+        font-family-secondary: "Open Sans",
+    ),
+    default,
+    default
+);
 
-$nb-themes: nb-register-theme((
-    font-family-primary:  'Open Sans',
-    font-family-secondary:  'Open Sans',
-    divider-color: #ccc
-), dark, dark);
+$nb-themes: nb-register-theme(
+    (
+        font-family-primary: "Open Sans",
+        font-family-secondary: "Open Sans",
+        background-basic-color-3: #202124,
+    ),
+    dark,
+    dark
+);

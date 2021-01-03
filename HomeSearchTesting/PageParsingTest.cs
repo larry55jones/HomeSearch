@@ -1,20 +1,19 @@
-﻿using HomeSearchAPI.Processing;
-using HomeSearchAPI.Entities;
+﻿using AngleSharp.Dom;
+using HomeSearchAPI.Processing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
-using System.Linq;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace HomeSearchTesting
 {
     [TestClass]
     public class PageParsingTest
     {
-        [TestMethod]
-        public async Task ParsingSmokeTest()
+        private string pageText;
+
+        [TestInitialize]
+        public void Init()
         {
             string filePath = $"{Environment.CurrentDirectory}\\SampleData\\testPage.html";
             if (!File.Exists(filePath))
@@ -23,11 +22,29 @@ namespace HomeSearchTesting
                 return;
             }
 
-            string pageText = await File.ReadAllTextAsync(filePath);
+            pageText = File.ReadAllText(filePath);
+        }
 
-            string homeListText = await DataMining.GetHomeListFromHTML(pageText);
-
+        [TestMethod]
+        public async Task ParsingSmokeTest()
+        {
             HomeSearchResults results = await DataMining.MineDataFromText(pageText);
+        }
+
+        [TestMethod]
+        public async Task GetPaginationControls()
+        {
+            IElement paginationControl = await DataMining.GetPaginationControl(pageText);
+            Assert.IsNotNull(paginationControl);
+        }
+
+        [TestMethod]
+        public async Task GetNumberOfPages()
+        {
+            int expectedPageCount = 3;
+            int calculatedPageCount = await DataMining.GetDocumentPageCount(pageText);
+
+            Assert.AreEqual(expectedPageCount, calculatedPageCount);
         }
     }
 }
