@@ -1,0 +1,16 @@
+@import "themes";
+
+nb-action {
+    cursor: pointer;
+}
+
+// Nb Action with active class gets special color
+// for actions in navbar
+nb-action.active nb-icon {
+    color: nb-theme(text-info-color);
+}
+
+// Get rid of default outline when you click
+nb-action:active {
+    outline: none;
+}

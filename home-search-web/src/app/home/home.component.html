@@ -1,0 +1,57 @@
+<nb-card class="card-full" accent="primary" [nbSpinner]="isState(State.Loading)" nbSpinnerSize="large"
+    nbSpinnerMessage="Loading Homes...">
+    <nb-card-header style="display: flex; justify-content: space-between; align-items: center;">
+        {{getHeaderText()}}
+
+        <nb-select placeholder="Select Showcase" [(selected)]="selectedFilter"
+            (selectedChange)="filterSelectionChange($event)">
+            <nb-option value="unread">Unread Only</nb-option>
+            <nb-option value="saved">Saved Only</nb-option>
+            <nb-option value="all">All</nb-option>
+        </nb-select>
+    </nb-card-header>
+
+    <nb-card-body [ngSwitch]="state" class="background-basic">
+        <div *ngSwitchCase="State.Data" style="display: flex; flex-direction: row; flex-wrap: wrap;">
+            <nb-card *ngFor="let home of homesFiltered" class="home-card"
+                [accent]="home.Status === 1 ? 'success' : 'info'">
+                <nb-card-header>
+                    {{home.StreetName}}
+
+
+                </nb-card-header>
+
+                <nb-card-body>
+                    <h4>
+                        ${{home.PriceInDollars | number}}
+                    </h4>
+                    <div>
+                        {{home.BedCount}} Bed, {{home.BathCount}} Bath
+                    </div>
+                    <div class="text-hint">
+                        {{home.City}}, {{home.State}} {{home.ZipCode}}
+                    </div>
+                </nb-card-body>
+
+                <nb-card-footer style="display: flex; align-items: center;">
+                    <div style="flex: 1;" class="clickable-icons">
+                        <nb-icon icon="checkmark-square-2-outline" status="success" nbTooltip="Save Home"
+                            (click)="saveHome(home)" *ngIf="home.Status != 1"></nb-icon>
+                        <nb-icon icon="close-square-outline" status="warning" nbTooltip="Ignore Home"
+                            (click)="ignoreHome(home)"></nb-icon>
+                        <nb-icon icon="trash-2" status="danger" nbTooltip="Ignore Home and Zip"
+                            (click)="ignoreHomeAndZip(home)"></nb-icon>
+                    </div>
+                    <a href={{home.DetailPageURL}} target="_blank" nbTooltip="View on realtor.com">
+                        <nb-icon icon="external-link"></nb-icon>
+                    </a>
+                </nb-card-footer>
+
+            </nb-card>
+        </div>
+
+        <div *ngSwitchCase="State.Error" class="text-danger">
+            Error: unable to load homes for sale
+        </div>
+    </nb-card-body>
+</nb-card>

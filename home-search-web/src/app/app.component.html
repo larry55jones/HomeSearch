@@ -1,0 +1,28 @@
+<nb-layout>
+    <nb-layout-header fixed>
+        <nb-layout-column style="flex: 1;">Home Search</nb-layout-column>
+        <nb-layout-column>
+            <nb-actions size="medium">
+                <nb-action icon="home" link="/home" routerLink="/home" routerLinkActive="active"></nb-action>
+                <nb-action icon="upload-outline" link="/upload" routerLink="/upload" routerLinkActive="active">
+                </nb-action>
+            </nb-actions>
+
+        </nb-layout-column>
+        <nb-layout-column style="margin-left: 2rem;">
+            <nb-actions size="medium">
+                <nb-action [icon]="themeValue === 'default' ? 'sun' : 'moon'" link="/home" (click)="toggleTheme()">
+                </nb-action>
+            </nb-actions>
+
+        </nb-layout-column>
+
+    </nb-layout-header>
+
+    <nb-layout-column>
+        <router-outlet></router-outlet>
+
+
+
+    </nb-layout-column>
+</nb-layout>

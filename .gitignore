@@ -102,3 +102,9 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Csharp bin and obj directories
+*/bin/
+*/obj/
+
+.vs/

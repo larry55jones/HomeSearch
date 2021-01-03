@@ -1,0 +1,15 @@
+<nb-card class="card-limited-width" status="basic">
+    <nb-card-header>
+        Upload Pages
+    </nb-card-header>
+    <nb-card-body>
+        <form [formGroup]="uploadForm" (submit)="submitUploadForm()">
+            <input formControlName="file" id="file" type="file" multiple class="form-control"
+                (change)="onFileChange($event)">
+
+            <div style="margin-top: 30px; text-align: right;">
+                <button nbButton type="submit" status="primary">Upload</button>
+            </div>
+        </form>
+    </nb-card-body>
+</nb-card>

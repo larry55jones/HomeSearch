@@ -1,0 +1,10 @@
+nb-card.card-limited-width {
+    max-width: 680px;
+    margin: 0 auto;
+}
+
+nb-card.card-full {
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+}

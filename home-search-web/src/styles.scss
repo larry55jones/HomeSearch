@@ -1,0 +1,28 @@
+/* You can add global styles to this file, and also import other style files */
+// this is our just created themes.scss file, make sure the path to the file is correct
+@import "themes";
+
+// framework component styles
+@import "~@nebular/theme/styles/globals";
+
+// install the framework styles
+@include nb-install() {
+  @include nb-theme-global();
+
+  .background-basic {
+    background-color: nb-theme(background-basic-color-3);
+  }
+}
+
+// my styling overrides
+@import "./action";
+@import "./card";
+
+// global font size control
+html {
+  font-size: 18px;
+}
+
+.text-danger {
+  color: nb-theme(text-danger-color);
+}
