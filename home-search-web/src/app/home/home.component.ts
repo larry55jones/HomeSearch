@@ -142,7 +142,7 @@ export class HomeComponent extends StatefulComponent implements OnInit {
         this.setState(State.Data);
       },
       error: (err: any) => {
-        this.logger.logSuccess(this.module, 'Load Homes Error', err);
+        this.logger.logError(this.module, 'Load Homes Error', err);
         this.setState(State.Error);
       }
     });

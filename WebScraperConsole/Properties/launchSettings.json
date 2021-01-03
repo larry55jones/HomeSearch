@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "WebScraperConsole": {
+      "commandName": "Project",
+      "commandLineArgs": "C:\\Projects\\SearchResults"
+    }
+  }
+}
