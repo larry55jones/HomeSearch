@@ -17,4 +17,13 @@
     <ProjectReference Include="..\HomeSearchAPI\HomeSearchAPI.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="SampleData\testPage.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SampleData\testPage2.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

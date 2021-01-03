@@ -41,6 +41,17 @@ namespace HomeSearchAPI.Processing
             return await MineDataFromText(pageText);
         }
 
+        public static async Task<string> GetHomeListFromHTML(string pageText)
+        {
+            IDocument document = await GetDocumentAsync(pageText);
+
+            // Get the element containing all our properties
+            var houseLists = document.QuerySelectorAll("ul[data-testid=\"property-list-container\"]");
+            var houseList = houseLists[0];
+
+            return houseList.InnerHtml;
+        }
+
         private static async Task<IDocument> GetDocumentAsync(string pageText)
         {
             //Use the default configuration for AngleSharp
