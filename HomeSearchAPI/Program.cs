@@ -1,4 +1,3 @@
-using HomeSearchAPI.Data;
 using HomeSearchAPI.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

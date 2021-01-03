@@ -1,11 +1,11 @@
-﻿using HomeSearchAPI.Data;
-using HomeSearchAPI.Entities;
+﻿using HomeSearchAPI.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.IO;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Collections.Generic;
+using HomeSearchAPI.Processing;
 
 namespace HomeSearchAPI
 {

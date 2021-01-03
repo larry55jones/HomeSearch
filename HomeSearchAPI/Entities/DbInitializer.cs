@@ -1,6 +1,4 @@
-﻿using HomeSearchAPI.Entities;
-
-namespace HomeSearchAPI.Data
+﻿namespace HomeSearchAPI.Entities
 {
     public static class DbInitializer
     {

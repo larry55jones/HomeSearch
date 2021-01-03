@@ -1,14 +1,20 @@
 ﻿using AngleSharp;
 using AngleSharp.Dom;
+using HomeSearchAPI.Entities;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace HomeSearchAPI.Data
+namespace HomeSearchAPI.Processing
 {
     public static class DataMining
     {
+        /// <summary>
+        /// Get Home Results Data from HTML Text
+        /// </summary>
+        /// <param name="pageText">Realtor Search Page HTML Content</param>
+        /// <returns>HomeSearchResults</returns>
         public static async Task<HomeSearchResults> MineDataFromText(string pageText)
         {
             HomeSearchResults results = new HomeSearchResults();

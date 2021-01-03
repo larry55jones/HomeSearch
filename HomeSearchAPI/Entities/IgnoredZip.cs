@@ -1,4 +1,4 @@
-﻿namespace HomeSearchAPI.Data
+﻿namespace HomeSearchAPI.Entities
 {
     public class IgnoredZip
     {

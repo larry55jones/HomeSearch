@@ -1,9 +1,7 @@
-﻿using System;
+﻿using HomeSearchAPI.Entities;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace HomeSearchAPI.Data
+namespace HomeSearchAPI.Processing
 {
     public class HomeSearchResults
     {

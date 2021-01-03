@@ -1,5 +1,4 @@
-﻿using HomeSearchAPI.Data;
-using HomeSearchAPI.Entities;
+﻿using HomeSearchAPI.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;

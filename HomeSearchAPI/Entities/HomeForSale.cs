@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace HomeSearchAPI.Data
+namespace HomeSearchAPI.Entities
 {
     /// <summary>
     /// Object representing a home for sale
