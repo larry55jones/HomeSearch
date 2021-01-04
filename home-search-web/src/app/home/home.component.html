@@ -1,9 +1,19 @@
 <nb-card class="card-full" accent="primary" [nbSpinner]="isState(State.Loading)" nbSpinnerSize="large"
     nbSpinnerMessage="Loading Homes...">
     <nb-card-header style="display: flex; justify-content: space-between; align-items: center;">
-        {{getHeaderText()}}
+        <span style="flex: 1;">{{getHeaderText()}}</span>
 
-        <nb-select placeholder="Select Showcase" [(selected)]="selectedFilter"
+        <nb-form-field>
+            <nb-icon nbPrefix icon="funnel" pack="eva"></nb-icon>
+            <input type="text" nbInput [(ngModel)]="filterText" (ngModelChange)="filterTextChanged($event)"
+                placeholder="Filter Address...">
+        </nb-form-field>
+
+        <button nbButton status="basic" class="filter-item" nbTooltip="Clear Filter" (click)="setFilterText('')">
+            <nb-icon icon="trash"></nb-icon>
+        </button>
+
+        <nb-select class="filter-item" placeholder="Select Showcase" [(selected)]="selectedFilter"
             (selectedChange)="filterSelectionChange($event)">
             <nb-option value="unread">Unread Only</nb-option>
             <nb-option value="saved">Saved Only</nb-option>
@@ -15,11 +25,7 @@
         <div *ngSwitchCase="State.Data" style="display: flex; flex-direction: row; flex-wrap: wrap;">
             <nb-card *ngFor="let home of homesFiltered" class="home-card"
                 [accent]="home.Status === 1 ? 'success' : 'info'">
-                <nb-card-header>
-                    {{home.StreetName}}
-
-
-                </nb-card-header>
+                <nb-card-header>{{home.StreetName}}</nb-card-header>
 
                 <nb-card-body>
                     <h4>
