@@ -154,20 +154,22 @@ export class HomeComponent extends StatefulComponent implements OnInit {
     this.setState(State.Loading);
 
     this.api.getHomes().subscribe({
-      next: (homes: HomeForSale[]) => {
-        this.logger.logSuccess(this.module, 'Loaded Homes', homes);
-        this.homes = homes;
-        if (!this.homes.some(h => h.Status === 0)) {
-          this.selectedFilter = 'saved';
-        }
-        this.filterHomes();
-        this.setState(State.Data);
-      },
+      next: this.afterHomesLoaded.bind(this),
       error: (err: any) => {
         this.logger.logError(this.module, 'Load Homes Error', err);
         this.setState(State.Error);
       }
     });
+  }
+
+  private afterHomesLoaded(homes: HomeForSale[]) {
+    this.logger.logSuccess(this.module, 'Loaded Homes', homes);
+    this.homes = homes;
+    if (!this.homes.some(h => h.Status === 0)) {
+      this.selectedFilter = 'saved';
+    }
+    this.filterHomes();
+    this.setState(State.Data);
   }
 
   private filterHomes() {
