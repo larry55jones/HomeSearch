@@ -113,6 +113,9 @@ export class HomeComponent extends StatefulComponent implements OnInit {
         if (existingHome != null) {
           this.homes.splice(this.homes.indexOf(existingHome), 1);
         }
+        if (!this.homes.some(h => h.Status === 0)) {
+          this.selectedFilter = 'saved';
+        }
         this.filterHomes();
         this.setState(State.Data);
       },
