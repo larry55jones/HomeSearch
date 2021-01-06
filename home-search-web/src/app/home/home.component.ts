@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NbToastrService } from '@nebular/theme';
 import { FtpsLoggerService } from 'ftps-logger-ngx';
 import { Subject } from 'rxjs';
@@ -18,7 +18,7 @@ enum State {
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent extends StatefulComponent implements OnInit, OnDestroy {
+export class HomeComponent extends StatefulComponent implements OnInit {
   private module = 'HomeComponent';
   private homes: HomeForSale[] = [];
   private filterTextStream = new Subject<string>();
