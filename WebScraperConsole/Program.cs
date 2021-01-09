@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using Microsoft.Extensions.Configuration;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using System;
@@ -10,8 +11,11 @@ namespace WebScraperConsoleTest
 {
     class Program
     {
+        static IConfiguration Configuration;
         static void Main(params string[] args)
         {
+            ReadConfig();
+
             string baseDirectory = GetBaseDir(args);
             Console.WriteLine($"Using Directory: {baseDirectory}");
 
@@ -21,7 +25,7 @@ namespace WebScraperConsoleTest
             Console.WriteLine("Scrape Finished");
 
             Process.Start("explorer.exe", baseDirectory);
-            var ps = new ProcessStartInfo("http://localhost:7331/upload")
+            var ps = new ProcessStartInfo(Configuration["WebUrl"] + "/upload")
             {
                 UseShellExecute = true,
                 Verb = "open"
@@ -45,55 +49,53 @@ namespace WebScraperConsoleTest
             try
             {
                 ChromeOptions chromeOptions = new ChromeOptions();
-                using (IWebDriver driver = new ChromeDriver(chromeOptions))
+                using IWebDriver driver = new ChromeDriver(chromeOptions);
+                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromMinutes(5));
+
+                int pageNumber = 1;
+                Console.WriteLine("Visiting main search url");
+
+                // visit search url
+                driver.Navigate().GoToUrl(Configuration["SearchURL"]);
+
+                Console.WriteLine("Waiting for Property List to Appear");
+
+                // wait for home list to appear
+                wait.Until(By.CssSelector("ul[data-testid=\"property-list-container\"]").FindElement);
+
+                string currentUrl = driver.Url;
+                Console.WriteLine($"Detected URL: {currentUrl}");
+
+                Thread.Sleep(333);
+
+                Console.WriteLine($"Saving Page {pageNumber}");
+
+                // write page content to file
+                File.WriteAllText($"{baseDir}\\page{pageNumber}.html", driver.PageSource);
+
+                pageNumber++;
+
+                while (BrowserIsOpen(driver))
                 {
-                    WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromMinutes(5));
+                    Console.WriteLine("Waiting Until the URL Changes...");
 
-                    int pageNumber = 1;
-                    Console.WriteLine("Visiting main search url");
+                    wait.Until(d => d.Url != currentUrl);
 
-                    // visit search url
-                    driver.Navigate().GoToUrl("https://www.realtor.com/realestateandhomes-search/Memphis_TN/beds-3/baths-2/price-100000-300000/type-single-family-home/pnd-hide/features-g1/radius-10");
+                    Console.WriteLine("URL Changed!");
 
-                    Console.WriteLine("Waiting for Property List to Appear");
-
-                    // wait for home list to appear
-                    wait.Until(By.CssSelector("ul[data-testid=\"property-list-container\"]").FindElement);
-
-                    string currentUrl = driver.Url;
+                    currentUrl = driver.Url;
                     Console.WriteLine($"Detected URL: {currentUrl}");
 
-                    Thread.Sleep(333);
+                    Console.WriteLine("Waiting for Property List to Appear");
+                    wait.Until(By.CssSelector("ul[data-testid=\"property-list-container\"]").FindElement);
 
                     Console.WriteLine($"Saving Page {pageNumber}");
+                    Thread.Sleep(333);
 
                     // write page content to file
                     File.WriteAllText($"{baseDir}\\page{pageNumber}.html", driver.PageSource);
 
                     pageNumber++;
-
-                    while (BrowserIsOpen(driver))
-                    {
-                        Console.WriteLine("Waiting Until the URL Changes...");
-
-                        wait.Until(d => d.Url != currentUrl);
-
-                        Console.WriteLine("URL Changed!");
-
-                        currentUrl = driver.Url;
-                        Console.WriteLine($"Detected URL: {currentUrl}");
-
-                        Console.WriteLine("Waiting for Property List to Appear");
-                        wait.Until(By.CssSelector("ul[data-testid=\"property-list-container\"]").FindElement);
-
-                        Console.WriteLine($"Saving Page {pageNumber}");
-                        Thread.Sleep(333);
-
-                        // write page content to file
-                        File.WriteAllText($"{baseDir}\\page{pageNumber}.html", driver.PageSource);
-
-                        pageNumber++;
-                    }
                 }
             } catch {}
         }
@@ -110,6 +112,14 @@ namespace WebScraperConsoleTest
                 return false;
                 throw;
             }
+        }
+
+        private static void ReadConfig()
+        {
+            var builder = new ConfigurationBuilder()
+                .AddJsonFile($"appsettings.json", true, true);
+
+            Configuration = builder.Build();
         }
     }
 }
